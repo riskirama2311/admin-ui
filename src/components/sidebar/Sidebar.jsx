@@ -1,62 +1,73 @@
-import "./sidebar.scss";
+import React from "react";
 import { Link } from "react-router-dom";
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import PersonIcon from '@mui/icons-material/Person';
-import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
-import AddShoppingCartRoundedIcon from '@mui/icons-material/AddShoppingCartRounded';
-import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
-import ExitToAppRoundedIcon from '@mui/icons-material/ExitToAppRounded';
+import "./sidebar.scss";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import Inventory2Icon from "@mui/icons-material/Inventory2";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import PortraitIcon from "@mui/icons-material/Portrait";
+import LogoutIcon from "@mui/icons-material/Logout";
+import CategoryIcon from "@mui/icons-material/Category";
 
 const Sidebar = () => {
-    return (
-        <div className="sidebar">
-            <div className="top">
-            <Link to="/">
-                <span className="logo">Store</span>
-            </Link>
-        </div>
-    <hr />
-        <div className="center">
-            <ul>
-            <p className="title">MAIN</p>
+  return (
+    <div className="sidebar">
+      <div className="top">
+        <Link to="/">
+          <span className="logo">Store</span>
+        </Link>
+      </div>
+      <hr />
+      <div className="center">
+        <ul>
+          <p className="title">MAIN</p>
+          <Link to="/">
             <li>
-                <DashboardIcon className="icon"/>
-                <span>Dashboard</span>
+              <DashboardIcon className="icon" />
+              <span>Dashboard</span>
             </li>
-            <p className="title">LIST</p>
-            <Link to="/users">
-                <li>
-                    <PersonIcon className="icon"/>
-                    <span>Users</span>
-                </li>
-            </Link>
-            <Link to="/products">
-                <li>
-                    <Inventory2OutlinedIcon className="icon"/>
-                    <span>Products</span>
-                </li>
-            </Link>
+          </Link>
+          <p className="title">LIST</p>
+          <Link to="/users">
             <li>
-                <AddShoppingCartRoundedIcon className="icon"/>
-                <span>Orders</span>
+              <AccountBoxIcon className="icon" />
+              <span>Users</span>
             </li>
-            <p className="title">USER</p>
+          </Link>
+          <Link to="/products">
             <li>
-                <AccountCircleRoundedIcon className="icon"/>
-                <span>Profile</span>
+              <Inventory2Icon className="icon" />
+              <span>Products</span>
             </li>
+          </Link>
+
+          <li>
+            <ShoppingCartIcon className="icon" />
+            <span>Orders</span>
+          </li>
+          <Link to="/mylist">
             <li>
-                <ExitToAppRoundedIcon className="icon"/>
-                <span>Logout</span>
+              <CategoryIcon className="icon" />
+              <span>Categories</span>
             </li>
-            </ul>
-        </div>
-        <div className="bottom">
-            <div className="colorOption"></div>
-            <div className="colorOption"></div>
-        </div>
+          </Link>
+          <p className="title">USER</p>
+          <li>
+            <PortraitIcon className="icon" />
+            <span>Profile</span>
+          </li>
+          <li>
+            <LogoutIcon className="icon" />
+            <span>Logout</span>
+          </li>
+        </ul>
+      </div>
+      <div className="bottom">
+        <div className="colorOption"></div>
+        <div className="colorOption"></div>
+      </div>
     </div>
-    ); 
+  );
 };
 
 export default Sidebar;
