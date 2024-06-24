@@ -10,9 +10,24 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import CategoryIcon from "@mui/icons-material/Category";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase";
+import { AuthContext } from "../../context/AuthContext";
+import { Navigate } from "react-router-dom";
 
 const Sidebar = () => {
   const { dispatch } = useContext(DarkModeContext);
+
+  const {dispatch: authDispatch} = useContext(AuthContext)
+
+  const HandleLogout = ()=>{
+    signOut(auth).then(()=>{
+      authDispatch({type: "LOGOUT"});
+      Navigate("/login")
+    }).catch((error)=>{
+      console.log(error)
+    })
+  }
 
   return (
     <div className="sidebar">
@@ -60,7 +75,7 @@ const Sidebar = () => {
             <PortraitIcon className="icon" />
             <span>Profile</span>
           </li>
-          <li>
+          <li onClick={HandleLogout}>
             <LogoutIcon className="icon" />
             <span>Logout</span>
           </li>
