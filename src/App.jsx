@@ -11,7 +11,7 @@ import "./style/dark.scss";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/AuthContext";
-import { userColumns, productColumns } from "./datatablesource";
+import { userColumns, productColumns, categoryColumns } from "./datatablesource";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);

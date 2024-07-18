@@ -35,10 +35,10 @@ const Widget = ({ type }) => {
       break;
     case "order":
       data = {
-        title: "ORDERS",
+        title: "PRODUCTS",
         isMoney: false,
         link: "View all orders",
-        query: "users",
+        query: "products",
         icon: (
           <ShoppingCartOutlinedIcon
             className="icon"
@@ -52,31 +52,14 @@ const Widget = ({ type }) => {
       break;
     case "earning":
       data = {
-        title: "EARNINGS",
-        isMoney: true,
-        link: "View net earnings",
-        query: "users",
+        title: "CATEGORIES",
+        isMoney: false,
+        link: "View Categories",
+        query: "your-collection-name",
         icon: (
           <MonetizationOnOutlinedIcon
             className="icon"
             style={{ backgroundColor: "rgba(0, 128, 0, 0.2)", color: "green" }}
-          />
-        ),
-      };
-      break;
-    case "balance":
-      data = {
-        title: "BALANCE",
-        isMoney: true,
-        link: "See details",
-        query: "users",
-        icon: (
-          <AccountBalanceWalletOutlinedIcon
-            className="icon"
-            style={{
-              backgroundColor: "rgba(128, 0, 128, 0.2)",
-              color: "purple",
-            }}
           />
         ),
       };
@@ -86,6 +69,8 @@ const Widget = ({ type }) => {
   }
 
   useEffect(() => {
+    if (!data) return;
+
     const fetchData = async () => {
       const today = new Date();
       const lastMonth = new Date(new Date().setMonth(today.getMonth() - 1));
@@ -116,7 +101,9 @@ const Widget = ({ type }) => {
       } 
     };
     fetchData();
-  }, []);
+  }, [data]);
+
+  if (!data) return null;
 
   return (
     <div className="widget">

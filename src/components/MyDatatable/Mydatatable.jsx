@@ -1,40 +1,72 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import "./mydatatable.scss";
 import { Link } from "react-router-dom";
-
-const columns = [
-  { field: "id", headerName: "ID", width: 70 },
-  { field: "firstName", headerName: "First name", width: 130 },
-];
-
-const rows = [
-  { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-  { id: 2, lastName: "Lannister", firstName: "Annisa", age: 42 },
-  { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-  { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-  { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: 90 },
-  { id: 6, lastName: "Melisandre", firstName: "Adenna", age: 150 },
-  { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-  { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-  { id: 9, lastName: "Annisa", firstName: "Aulia", age: 65 },
-];
+import { collection, getDocs, addDoc, deleteDoc, doc } from "firebase/firestore";
+import { db } from "../../firebase";
 
 const MyDatatable = ({ title }) => {
+  const [data, setData] = useState([]);
+  const [newData, setNewData] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const querySnapshot = await getDocs(collection(db, "your-collection-name"));
+      const dataList = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+      setData(dataList);
+    };
+    fetchData();
+  }, []);
+
+  const handleAdd = async () => {
+    if (newData.trim()) {
+      await addDoc(collection(db, "your-collection-name"), { name: newData });
+      setNewData("");
+      // Refresh data
+      const querySnapshot = await getDocs(collection(db, "your-collection-name"));
+      const dataList = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+      setData(dataList);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    await deleteDoc(doc(db, "your-collection-name", id));
+    // Refresh data
+    const querySnapshot = await getDocs(collection(db, "your-collection-name"));
+    const dataList = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+    setData(dataList);
+  };
+
   return (
-    <div className="datatable">
-      <div className="datatableTitle">{title}</div>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
-          },
-        }}
-        pageSizeOptions={[5, 10]}
-        checkboxSelection
-      />
+    <div className="mydatatable">
+      <h2>{title}</h2>
+      <div className="add-data">
+        <input 
+          type="text" 
+          value={newData} 
+          onChange={(e) => setNewData(e.target.value)} 
+          placeholder="Add new data" 
+        />
+        <button onClick={handleAdd}>Add</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map(item => (
+            <tr key={item.id}>
+              <td>{item.name}</td>
+              <td>
+                <button onClick={() => handleDelete(item.id)}>Delete</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
